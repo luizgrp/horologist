@@ -40,7 +40,7 @@ class PlayerUiStateMapperTest {
         // when
         val result = PlayerUiStateMapper.map(
             commands,
-            shuffleEnabled = false,
+            shuffleModeEnabled = false,
             isPlaying = false,
             mediaItem = null,
             trackPosition = null
@@ -73,7 +73,7 @@ class PlayerUiStateMapperTest {
         // when
         val result = PlayerUiStateMapper.map(
             commands,
-            shuffleEnabled = false,
+            shuffleModeEnabled = false,
             isPlaying = false,
             mediaItem = null,
             trackPosition = null
@@ -91,7 +91,7 @@ class PlayerUiStateMapperTest {
         // when
         val result = PlayerUiStateMapper.map(
             commands,
-            shuffleEnabled = false,
+            shuffleModeEnabled = false,
             isPlaying = false,
             mediaItem = null,
             trackPosition = null
@@ -109,7 +109,7 @@ class PlayerUiStateMapperTest {
         // when
         val result = PlayerUiStateMapper.map(
             commands,
-            shuffleEnabled = false,
+            shuffleModeEnabled = false,
             isPlaying = false,
             mediaItem = null,
             trackPosition = null
@@ -127,7 +127,7 @@ class PlayerUiStateMapperTest {
         // when
         val result = PlayerUiStateMapper.map(
             commands,
-            shuffleEnabled = false,
+            shuffleModeEnabled = false,
             isPlaying = false,
             mediaItem = null,
             trackPosition = null
@@ -146,7 +146,7 @@ class PlayerUiStateMapperTest {
         // when
         val result = PlayerUiStateMapper.map(
             commands,
-            shuffleEnabled = false,
+            shuffleModeEnabled = false,
             isPlaying = false,
             mediaItem = null,
             trackPosition = null
@@ -165,7 +165,7 @@ class PlayerUiStateMapperTest {
         // when
         val result = PlayerUiStateMapper.map(
             commands,
-            shuffleEnabled = false,
+            shuffleModeEnabled = false,
             isPlaying = false,
             mediaItem = null,
             trackPosition = null
@@ -184,7 +184,7 @@ class PlayerUiStateMapperTest {
         // when
         val result = PlayerUiStateMapper.map(
             commands,
-            shuffleEnabled = false,
+            shuffleModeEnabled = false,
             isPlaying = false,
             mediaItem = null,
             trackPosition = null
@@ -202,7 +202,7 @@ class PlayerUiStateMapperTest {
         // when
         val result = PlayerUiStateMapper.map(
             Player.Commands.EMPTY,
-            shuffleEnabled = shuffleEnabled,
+            shuffleModeEnabled = shuffleEnabled,
             isPlaying = false,
             mediaItem = null,
             trackPosition = null
@@ -220,7 +220,7 @@ class PlayerUiStateMapperTest {
         // when
         val result = PlayerUiStateMapper.map(
             Player.Commands.EMPTY,
-            shuffleEnabled = shuffleEnabled,
+            shuffleModeEnabled = shuffleEnabled,
             isPlaying = false,
             mediaItem = null,
             trackPosition = null
@@ -238,7 +238,7 @@ class PlayerUiStateMapperTest {
         // when
         val result = PlayerUiStateMapper.map(
             commands,
-            shuffleEnabled = false,
+            shuffleModeEnabled = false,
             isPlaying = false,
             mediaItem = null,
             trackPosition = null
@@ -256,7 +256,7 @@ class PlayerUiStateMapperTest {
         // when
         val result = PlayerUiStateMapper.map(
             Player.Commands.EMPTY,
-            shuffleEnabled = false,
+            shuffleModeEnabled = false,
             isPlaying = isPlaying,
             mediaItem = null,
             trackPosition = null
@@ -274,7 +274,7 @@ class PlayerUiStateMapperTest {
         // when
         val result = PlayerUiStateMapper.map(
             Player.Commands.EMPTY,
-            shuffleEnabled = false,
+            shuffleModeEnabled = false,
             isPlaying = isPlaying,
             mediaItem = null,
             trackPosition = null
@@ -300,7 +300,7 @@ class PlayerUiStateMapperTest {
         // when
         val result = PlayerUiStateMapper.map(
             Player.Commands.EMPTY,
-            shuffleEnabled = false,
+            shuffleModeEnabled = false,
             isPlaying = false,
             mediaItem = mediaItem,
             trackPosition = null
@@ -323,7 +323,7 @@ class PlayerUiStateMapperTest {
         // when
         val result = PlayerUiStateMapper.map(
             Player.Commands.EMPTY,
-            shuffleEnabled = false,
+            shuffleModeEnabled = false,
             isPlaying = false,
             mediaItem = null,
             trackPosition = trackPosition
