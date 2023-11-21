@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - release-0.1.x
     paths-ignore:
       - '**.md'
   pull_request:
+  workflow_dispatch:
 
 jobs:
   build:
@@ -14,117 +16,133 @@ jobs:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
 
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 40
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
-          # Fetch expanded history, which is needed for affected module detection
-          fetch-depth: '500'
+          lfs: 'true'
 
       - name: Copy CI gradle.properties
         run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
 
       - name: set up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
-          java-version: 11
-
-      - name: Generate cache key
-        run: ./checksum.sh checksum.txt
-
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches/modules-*
-            ~/.gradle/caches/jars-*
-            ~/.gradle/caches/build-cache-*
-          key: gradle-${{ hashFiles('checksum.txt') }}
-
-      - name: Build
-        run: |
-          ./gradlew --scan --stacktrace \
-              spotlessCheck \
-              assemble \
-              metalavaCheckCompatibility \
-              lintDebug
+          distribution: 'zulu'
+          java-version: 17
 
       - name: Unit Tests
-        run: |
-          ./scripts/run-tests.sh \
-              --unit-tests \
-              --run-affected \
-              --affected-base-ref=$BASE_REF
-
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v2
+        uses: gradle/gradle-build-action@v2
+        id: screenshotsverify
+        continue-on-error: true
         with:
-          name: test-results-robolectric
+          arguments: testDebug --rerun
+
+      - name: Prevent pushing new screenshots if this is a fork
+        id: checkfork
+        continue-on-error: false
+        if: steps.screenshotsverify.outcome == 'failure' && github.event.pull_request.head.repo.full_name != github.repository
+        run: |
+          echo "::error::Screenshot tests failed, please create a PR in your fork first." && exit 1
+
+      - name: Generate new screenshots if verification failed and it's a PR
+        id: screenshotsrecord
+        if: steps.screenshotsverify.outcome == 'failure' && github.event_name == 'pull_request'
+        run: |
+          ./gradlew testDebug -P screenshot.record=repair
+
+      - name: Push new screenshots if available
+        uses: stefanzweifel/git-auto-commit-action@v5
+        if: steps.screenshotsrecord.outcome == 'success'
+        with:
+          file_pattern: '**/snapshots/images/*.png'
+          disable_globbing: true
+          commit_message: "🤖 Updates screenshots"
+
+      - name: Upload test results and reports
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-results
           path: |
             **/build/test-results/*
             **/build/reports/*
+            **/out/*
 
-  test:
-    runs-on: macos-latest
-    needs: build
+  compiletests:
+    # Skip build if head commit contains 'skip ci'
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
+
+    runs-on: ubuntu-latest
     timeout-minutes: 50
-
-    strategy:
-      # Allow tests to continue on other devices if they fail on one device.
-      fail-fast: false
-      matrix:
-        api-level: [ 28, 30 ]
-        shard: [ 0, 1 ] # Need to update shard-count below if this changes
 
     env:
       TERM: dumb
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
-          # Fetch expanded history, which is needed for affected module detection
-          fetch-depth: '500'
+          lfs: 'true'
 
       - name: Copy CI gradle.properties
         run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
 
       - name: set up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
-          java-version: 11
+          distribution: 'zulu'
+          java-version: 17
 
-      - name: Generate cache key
-        run: ./checksum.sh checksum.txt
-
-      - uses: actions/cache@v2
+      - name: Compile tests
+        uses: gradle/gradle-build-action@v2
         with:
-          path: |
-            ~/.gradle/caches/modules-*
-            ~/.gradle/caches/jars-*
-            ~/.gradle/caches/build-cache-*
-          key: gradle-${{ hashFiles('checksum.txt') }}
+          arguments: compileDebugAndroidTestSources
 
-      - name: Run tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: ${{ matrix.api-level }}
-          target: android-wear
-          profile: wear_round_454
-          script: ./scripts/run-tests.sh --log-file=logcat.txt --run-affected --affected-base-ref=$BASE_REF --shard-index=${{ matrix.shard }} --shard-count=2
+  verify:
+    # Skip build if head commit contains 'skip ci'
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
 
-      - name: Upload logs
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: logs-${{ matrix.api-level }}-${{ matrix.shard }}
-          path: logcat.txt
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
 
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v2
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
-          name: test-results-${{ matrix.api-level }}-${{ matrix.shard }}
-          path: |
-            **/build/reports/*
-            **/build/outputs/*/connected/*
+          lfs: 'true'
+
+      - name: Copy CI gradle.properties
+        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
+
+      - name: set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Check GIT lfs images
+        run: |
+          ./scripts/git-lfs-check.sh
+
+      - name: Metalava compatibility check
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: --stacktrace
+            metalavaCheckCompatibility metalavaCheckCompatibilityRelease
+
+      - name: Code analysis
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: --stacktrace
+            spotlessCheck
+            lintDebug
+
+      - name: Dependencies analysis
+        uses: gradle/gradle-build-action@v2
+        if: ${{ false }} # Disabled until -android supported https://github.com/google/horologist/issues/1314
+        with:
+          arguments: --stacktrace
+            projectHealth

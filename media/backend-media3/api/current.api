@@ -1,0 +1,83 @@
+// Signature format: 4.0
+package com.google.android.horologist.media3.config {
+
+  public class WearMedia3Factory {
+    ctor public WearMedia3Factory(android.content.Context context);
+    method public final androidx.media3.exoplayer.RenderersFactory audioOnlyRenderersFactory(androidx.media3.exoplayer.audio.AudioSink audioSink, optional androidx.media3.exoplayer.mediacodec.MediaCodecSelector mediaCodecSelector);
+    method public final androidx.media3.exoplayer.audio.DefaultAudioSink audioSink(androidx.media3.exoplayer.ExoPlayer.AudioOffloadListener? audioOffloadListener);
+    method public final androidx.media3.exoplayer.mediacodec.MediaCodecSelector mediaCodecSelector();
+  }
+
+}
+
+package com.google.android.horologist.media3.flows {
+
+  public final class BuildSuspendKt {
+    method @com.google.android.horologist.annotations.ExperimentalHorologistApi public static suspend Object? buildSuspend(androidx.media3.session.MediaBrowser.Builder, kotlin.coroutines.Continuation<? super androidx.media3.session.MediaBrowser>);
+  }
+
+  public final class CurrentMediaItemFlowKt {
+    method @com.google.android.horologist.annotations.ExperimentalHorologistApi public static kotlinx.coroutines.flow.Flow<androidx.media3.common.MediaItem> currentMediaItemFlow(androidx.media3.common.Player);
+  }
+
+  public final class IsPlayingFlowKt {
+    method @com.google.android.horologist.annotations.ExperimentalHorologistApi public static kotlinx.coroutines.flow.Flow<java.lang.Boolean> isPlayingFlow(androidx.media3.common.Player);
+  }
+
+  public final class WaitForPlayingKt {
+    method public static suspend Object? waitForNotPlaying(androidx.media3.common.Player, kotlin.coroutines.Continuation<? super kotlin.Unit>);
+    method public static suspend Object? waitForPlaying(androidx.media3.common.Player, kotlin.coroutines.Continuation<? super kotlin.Unit>);
+  }
+
+}
+
+package com.google.android.horologist.media3.navigation {
+
+  public interface IntentBuilder {
+    method public android.app.PendingIntent buildDownloadIntent();
+    method public android.app.PendingIntent buildPlayerIntent();
+  }
+
+  public final class NavDeepLinkIntentBuilder implements com.google.android.horologist.media3.navigation.IntentBuilder {
+    ctor public NavDeepLinkIntentBuilder(android.content.Context application, String downloadUri, String playerUri);
+    method public android.app.PendingIntent buildDownloadIntent();
+    method public android.app.PendingIntent buildPlayerIntent();
+  }
+
+}
+
+package com.google.android.horologist.media3.service {
+
+  public abstract class LifecycleMediaLibraryService extends androidx.media3.session.MediaLibraryService implements androidx.lifecycle.LifecycleOwner {
+    ctor public LifecycleMediaLibraryService();
+    method public androidx.lifecycle.Lifecycle getLifecycle();
+    method protected abstract androidx.media3.session.MediaLibraryService.MediaLibrarySession getMediaLibrarySession();
+    method public androidx.media3.session.MediaLibraryService.MediaLibrarySession? onGetSession(androidx.media3.session.MediaSession.ControllerInfo controllerInfo);
+    method @Deprecated public final void onStart(android.content.Intent? intent, int startId);
+    method @CallSuper public final int onStartCommand(android.content.Intent? intent, int flags, int startId);
+    property public androidx.lifecycle.Lifecycle lifecycle;
+    property protected abstract androidx.media3.session.MediaLibraryService.MediaLibrarySession mediaLibrarySession;
+  }
+
+  @com.google.android.horologist.annotations.ExperimentalHorologistApi public final class NetworkAwareDownloadListener implements androidx.media3.exoplayer.offline.DownloadManager.Listener {
+    ctor public NetworkAwareDownloadListener(com.google.android.horologist.media3.logging.ErrorReporter appEventLogger, com.google.android.horologist.networks.highbandwidth.HighBandwidthNetworkMediator highBandwidthNetworkMediator, com.google.android.horologist.networks.rules.NetworkingRulesEngine networkingRulesEngine);
+  }
+
+  @com.google.android.horologist.annotations.ExperimentalHorologistApi public abstract class SuspendingMediaLibrarySessionCallback implements androidx.media3.session.MediaLibraryService.MediaLibrarySession.Callback {
+    ctor public SuspendingMediaLibrarySessionCallback(kotlinx.coroutines.CoroutineScope serviceScope, com.google.android.horologist.media3.logging.ErrorReporter appEventLogger);
+    method protected suspend Object? onAddMediaItemsInternal(androidx.media3.session.MediaSession mediaSession, androidx.media3.session.MediaSession.ControllerInfo controller, java.util.List<androidx.media3.common.MediaItem> mediaItems, kotlin.coroutines.Continuation<? super java.util.List<androidx.media3.common.MediaItem>>);
+    method protected abstract suspend Object? onGetChildrenInternal(androidx.media3.session.MediaLibraryService.MediaLibrarySession session, androidx.media3.session.MediaSession.ControllerInfo browser, String parentId, int page, int pageSize, androidx.media3.session.MediaLibraryService.LibraryParams? params, kotlin.coroutines.Continuation<? super androidx.media3.session.LibraryResult<com.google.common.collect.ImmutableList<androidx.media3.common.MediaItem>>>);
+    method protected abstract suspend Object? onGetItemInternal(androidx.media3.session.MediaLibraryService.MediaLibrarySession session, androidx.media3.session.MediaSession.ControllerInfo browser, String mediaId, kotlin.coroutines.Continuation<? super androidx.media3.session.LibraryResult<androidx.media3.common.MediaItem>>);
+    method protected abstract suspend Object? onGetLibraryRootInternal(androidx.media3.session.MediaLibraryService.MediaLibrarySession session, androidx.media3.session.MediaSession.ControllerInfo browser, androidx.media3.session.MediaLibraryService.LibraryParams? params, kotlin.coroutines.Continuation<? super androidx.media3.session.LibraryResult<androidx.media3.common.MediaItem>>);
+  }
+
+}
+
+package com.google.android.horologist.media3.util {
+
+  public final class ToAudioFormatKt {
+    method public static android.media.AudioFormat? toAudioFormat(androidx.media3.common.Format);
+  }
+
+}
+

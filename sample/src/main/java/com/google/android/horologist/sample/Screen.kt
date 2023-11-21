@@ -17,12 +17,36 @@
 package com.google.android.horologist.sample
 
 sealed class Screen(
-    val route: String
+    val route: String,
 ) {
     object Menu : Screen("menu")
     object FillMaxRectangle : Screen("fmr")
-    object FadeAway : Screen("fadeAway")
-    object FadeAwaySLC : Screen("fadeAwaySLC")
-    object FadeAwayColumn : Screen("fadeAwayColumn")
+    object ScrollAway : Screen("scrollAway")
+    object ScrollAwaySLC : Screen("scrollAwaySLC")
+    object ScrollAwayColumn : Screen("scrollAwayColumn")
     object Volume : Screen("volume")
+    object DatePicker : Screen("datePicker")
+    object TimePicker : Screen("timePicker")
+    object TimeWithSecondsPicker : Screen("timeWithSecondsPicker")
+    object TimeWithoutSecondsPicker : Screen("timeWithoutSecondsPicker")
+    object Network : Screen("network")
+
+    object DataLayerNodes : Screen("nodes")
+
+    object SectionedListMenuScreen : Screen("sectionedListMenuScreen")
+    object SectionedListStatelessScreen : Screen("sectionedListStatelessScreen")
+    object SectionedListStatefulScreen : Screen("sectionedListStatefulScreen")
+    object SectionedListExpandableScreen : Screen("sectionedListExpandableScreen")
+
+    object RotaryMenuScreen : Screen("rotaryMenuScreen")
+
+    object RotaryScrollScreen : Screen("rotaryScrollScreen")
+    object RotaryScrollReversedScreen : Screen("rotaryScrollReversedScreen")
+    object RotaryScrollWithFlingScreen : Screen("rotaryScrollWithFlingScreen")
+    object RotarySnapListScreen : Screen("rotarySnapListScreen")
+
+    object Paging : Screen("paging")
+    object PagingItem : Screen("pagingItem?id={id}")
+
+    object PagerScreen : Screen("pagerScreen")
 }

@@ -21,6 +21,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.NavHostController
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
+import com.google.android.horologist.sample.di.SampleAppDI
 
 class NavActivity : ComponentActivity() {
     lateinit var navController: NavHostController
@@ -28,10 +29,14 @@ class NavActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        SampleAppDI.inject(this)
+
         setContent {
             navController = rememberSwipeDismissableNavController()
 
-            NavWearApp(navController)
+            NavWearApp(
+                navController = navController,
+            )
         }
     }
 }

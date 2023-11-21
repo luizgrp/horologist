@@ -14,16 +14,20 @@
  * limitations under the License.
  */
 
+@file:OptIn(ExperimentalWearFoundationApi::class)
+
 package com.google.android.horologist.navsample
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.wear.compose.material.ScalingLazyColumn
-import androidx.wear.compose.material.ScalingLazyListState
-import com.google.android.horologist.compose.navscaffold.scrollableColumn
+import androidx.wear.compose.foundation.ExperimentalWearFoundationApi
+import androidx.wear.compose.foundation.lazy.AutoCenteringParams
+import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
+import androidx.wear.compose.foundation.lazy.ScalingLazyListState
+import androidx.wear.compose.foundation.rememberActiveFocusRequester
+import com.google.android.horologist.compose.rotaryinput.rotaryWithScroll
 import com.google.android.horologist.sample.SampleChip
 
 @Composable
@@ -31,48 +35,51 @@ fun NavMenuScreen(
     modifier: Modifier = Modifier,
     navigateToRoute: (String) -> Unit,
     scrollState: ScalingLazyListState,
-    focusRequester: FocusRequester = remember { FocusRequester() }
 ) {
+    val focusRequester = rememberActiveFocusRequester()
+
     ScalingLazyColumn(
-        modifier = modifier.scrollableColumn(focusRequester, scrollState),
+        modifier = modifier
+            .fillMaxSize()
+            .rotaryWithScroll(scrollState, focusRequester),
         state = scrollState,
         horizontalAlignment = Alignment.CenterHorizontally,
-        autoCentering = true,
+        autoCentering = AutoCenteringParams(itemIndex = 0),
     ) {
         item {
             SampleChip(
                 onClick = { navigateToRoute(NavScreen.ScalingLazyColumn.route) },
-                label = "ScalingLazyColumn"
+                label = "ScalingLazyColumn",
             )
         }
         item {
             SampleChip(
                 onClick = { navigateToRoute(NavScreen.Column.route) },
-                label = "Column"
+                label = "Column",
             )
         }
         item {
             SampleChip(
                 onClick = { navigateToRoute(NavScreen.Dialog.route) },
-                label = "Dialog"
+                label = "Dialog",
             )
         }
         item {
             SampleChip(
                 onClick = { navigateToRoute(NavScreen.Pager.route) },
-                label = "Pager"
+                label = "Pager",
             )
         }
         item {
             SampleChip(
                 onClick = { navigateToRoute(NavScreen.Volume.route) },
-                label = "Volume (custom scrolling)"
+                label = "Volume (custom scrolling)",
             )
         }
         item {
             SampleChip(
                 onClick = { navigateToRoute(NavScreen.Snackbar.route) },
-                label = "Snackbar"
+                label = "Snackbar",
             )
         }
     }

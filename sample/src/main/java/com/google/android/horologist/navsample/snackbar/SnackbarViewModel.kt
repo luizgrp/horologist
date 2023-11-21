@@ -21,7 +21,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.google.android.horologist.compose.navscaffold.ExperimentalComposeLayoutApi
+import com.google.android.horologist.annotations.ExperimentalHorologistApi
 import com.google.android.horologist.compose.snackbar.SnackbarDuration
 import com.google.android.horologist.compose.snackbar.SnackbarHostState
 import kotlinx.coroutines.flow.filterNotNull
@@ -31,9 +31,9 @@ import kotlinx.coroutines.launch
  * A ViewModel the maintainer the SnackbarHostState, and a reference to the Manager
  * for both processes snackbars sequentially and also showing a message.
  */
-@ExperimentalComposeLayoutApi
+@ExperimentalHorologistApi
 public open class SnackbarViewModel(
-    private val snackbarManager: SnackbarManager
+    private val snackbarManager: SnackbarManager,
 ) : ViewModel() {
     public val snackbarHostState: SnackbarHostState = SnackbarHostState()
 
@@ -43,7 +43,7 @@ public open class SnackbarViewModel(
             messages.collect { message ->
                 snackbarHostState.showSnackbar(
                     message = message.message,
-                    duration = SnackbarDuration.Short
+                    duration = SnackbarDuration.Short,
                 )
                 snackbarManager.setMessageShown(message.id)
             }

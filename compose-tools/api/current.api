@@ -1,0 +1,201 @@
+// Signature format: 4.0
+package com.google.android.horologist.compose.tools {
+
+  public final class Device {
+    ctor public Device(String name, int screenSizePx, float density, optional float fontScale, optional boolean boldText, optional boolean round);
+    method public String component1();
+    method public int component2();
+    method public float component3();
+    method public float component4();
+    method public boolean component5();
+    method public boolean component6();
+    method public com.google.android.horologist.compose.tools.Device copy(String name, int screenSizePx, float density, float fontScale, boolean boldText, boolean round);
+    method public boolean getBoldText();
+    method public float getDensity();
+    method public float getFontScale();
+    method public String getName();
+    method public boolean getRound();
+    method public int getScreenSizeDp();
+    method public int getScreenSizePx();
+    property public final boolean boldText;
+    property public final float density;
+    property public final float fontScale;
+    property public final String name;
+    property public final boolean round;
+    property public final int screenSizeDp;
+    property public final int screenSizePx;
+  }
+
+  public final class DeviceKt {
+    method public static com.google.android.horologist.compose.tools.Device getGenericLargeRound();
+    method public static com.google.android.horologist.compose.tools.Device getGenericSmallRound();
+    method public static com.google.android.horologist.compose.tools.Device getGooglePixelWatch();
+    method public static com.google.android.horologist.compose.tools.Device getMobvoiTicWatchPro5();
+    method public static com.google.android.horologist.compose.tools.Device getSamsungGalaxyWatch5();
+    method public static com.google.android.horologist.compose.tools.Device getSamsungGalaxyWatch6Large();
+    property public static final com.google.android.horologist.compose.tools.Device GenericLargeRound;
+    property public static final com.google.android.horologist.compose.tools.Device GenericSmallRound;
+    property public static final com.google.android.horologist.compose.tools.Device GooglePixelWatch;
+    property public static final com.google.android.horologist.compose.tools.Device MobvoiTicWatchPro5;
+    property public static final com.google.android.horologist.compose.tools.Device SamsungGalaxyWatch5;
+    property public static final com.google.android.horologist.compose.tools.Device SamsungGalaxyWatch6Large;
+  }
+
+  public final class InteractivePreviewAwareKt {
+    method @androidx.compose.runtime.Composable public static void InteractivePreviewAware(kotlin.jvm.functions.Function0<kotlin.Unit> block);
+    method public static androidx.compose.runtime.ProvidableCompositionLocal<java.lang.Boolean> getLocalInteractivePreview();
+    method public static androidx.compose.runtime.ProvidableCompositionLocal<java.lang.Boolean> getLocalStaticPreview();
+    property public static final androidx.compose.runtime.ProvidableCompositionLocal<java.lang.Boolean> LocalInteractivePreview;
+    property public static final androidx.compose.runtime.ProvidableCompositionLocal<java.lang.Boolean> LocalStaticPreview;
+  }
+
+  public final class RoundPreviewKt {
+    method @androidx.compose.runtime.Composable public static void RoundPreview(optional boolean round, kotlin.jvm.functions.Function0<kotlin.Unit> content);
+  }
+
+  public final class ThemeColors {
+    ctor public ThemeColors(optional long primary, optional long primaryVariant, optional long secondary, optional long secondaryVariant, optional long background, optional long surface, optional long error, optional long onPrimary, optional long onSecondary, optional long onBackground, optional long onSurface, optional long onSurfaceVariant, optional long onError);
+    method public long component1-0d7_KjU();
+    method public long component10-0d7_KjU();
+    method public long component11-0d7_KjU();
+    method public long component12-0d7_KjU();
+    method public long component13-0d7_KjU();
+    method public long component2-0d7_KjU();
+    method public long component3-0d7_KjU();
+    method public long component4-0d7_KjU();
+    method public long component5-0d7_KjU();
+    method public long component6-0d7_KjU();
+    method public long component7-0d7_KjU();
+    method public long component8-0d7_KjU();
+    method public long component9-0d7_KjU();
+    method public com.google.android.horologist.compose.tools.ThemeColors copy-daRQuJA(long primary, long primaryVariant, long secondary, long secondaryVariant, long background, long surface, long error, long onPrimary, long onSecondary, long onBackground, long onSurface, long onSurfaceVariant, long onError);
+    method public long getBackground();
+    method public long getError();
+    method public long getOnBackground();
+    method public long getOnError();
+    method public long getOnPrimary();
+    method public long getOnSecondary();
+    method public long getOnSurface();
+    method public long getOnSurfaceVariant();
+    method public long getPrimary();
+    method public long getPrimaryVariant();
+    method public long getSecondary();
+    method public long getSecondaryVariant();
+    method public long getSurface();
+    method public androidx.wear.compose.material.Colors toColors();
+    property public final long background;
+    property public final long error;
+    property public final long onBackground;
+    property public final long onError;
+    property public final long onPrimary;
+    property public final long onSecondary;
+    property public final long onSurface;
+    property public final long onSurfaceVariant;
+    property public final long primary;
+    property public final long primaryVariant;
+    property public final long secondary;
+    property public final long secondaryVariant;
+    property public final long surface;
+  }
+
+  public final class ThemeValues {
+    ctor public ThemeValues(String name, int index, com.google.android.horologist.compose.tools.ThemeColors themeColors);
+    method public String component1();
+    method public int component2();
+    method public com.google.android.horologist.compose.tools.ThemeColors component3();
+    method public com.google.android.horologist.compose.tools.ThemeValues copy(String name, int index, com.google.android.horologist.compose.tools.ThemeColors themeColors);
+    method public androidx.wear.compose.material.Colors getColors();
+    method public int getIndex();
+    method public String getName();
+    method public String getSafeName();
+    method public com.google.android.horologist.compose.tools.ThemeColors getThemeColors();
+    property public final androidx.wear.compose.material.Colors colors;
+    property public final int index;
+    property public final String name;
+    property public final String safeName;
+    property public final com.google.android.horologist.compose.tools.ThemeColors themeColors;
+  }
+
+  public final class ThemeValuesKt {
+    method public static java.util.List<com.google.android.horologist.compose.tools.ThemeValues> getThemeValues();
+    property public static final java.util.List<com.google.android.horologist.compose.tools.ThemeValues> themeValues;
+  }
+
+  public final class TilePreviewKt {
+    method @androidx.compose.runtime.Composable @com.google.android.horologist.annotations.ExperimentalHorologistApi public static void LayoutElementPreview(androidx.wear.protolayout.LayoutElementBuilders.LayoutElement element, optional @ColorInt int windowBackgroundColor, optional kotlin.jvm.functions.Function1<? super androidx.wear.protolayout.ResourceBuilders.Resources.Builder,kotlin.Unit> tileResourcesFn);
+    method @androidx.compose.runtime.Composable public static void LayoutRootPreview(androidx.wear.protolayout.LayoutElementBuilders.LayoutElement root, optional kotlin.jvm.functions.Function1<? super androidx.wear.protolayout.ResourceBuilders.Resources.Builder,kotlin.Unit> tileResourcesFn);
+    method @androidx.compose.runtime.Composable public static <T, R> void TileLayoutPreview(T? state, R? resourceState, com.google.android.horologist.tiles.render.TileLayoutRenderer<T,R> renderer);
+    method @androidx.compose.runtime.Composable public static void TilePreview(androidx.wear.tiles.TileBuilders.Tile tile, androidx.wear.protolayout.ResourceBuilders.Resources tileResources, optional kotlin.jvm.functions.Function1<? super androidx.wear.protolayout.StateBuilders.State,androidx.wear.tiles.TileBuilders.Tile>? onLoadAction);
+    method public static androidx.wear.protolayout.DeviceParametersBuilders.DeviceParameters buildDeviceParameters(android.content.res.Resources resources);
+  }
+
+  public final class TypographyKt {
+    method @androidx.compose.runtime.Composable public static androidx.wear.compose.material.Typography copy(androidx.wear.compose.material.Typography, kotlin.jvm.functions.Function1<? super androidx.compose.ui.text.TextStyle,androidx.compose.ui.text.TextStyle> fn);
+  }
+
+  @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="en") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="ar") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="as") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="b+es+419") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="bg") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="bn") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="ca") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="cs") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="da") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="de") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="el") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="en-rGB") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="en-rIE") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="es") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="es-rUS") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="et") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="eu") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="fa") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="fi") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="fr") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="fr-rCA") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="gl") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="gu") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="hi") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="hr") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="hu") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="hy") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="in") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="is") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="it") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="iw") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="ja") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="ka") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="kk") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="km") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="kn") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="ko") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="ky") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="lt") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="lv") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="mk") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="ml") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="mn") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="mr") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="ms") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="my") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="nb") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="ne") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="nl") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="or") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="pa") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="pl") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="pt-rBR") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="pt-rPT") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="ro") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="ru") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="si") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="sk") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="sl") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="sq") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="sr") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="sv") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="ta") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="te") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="th") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="tr") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="uk") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="ur") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="uz") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="vi") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="zh-rCN") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="zh-rHK") @androidx.compose.ui.tooling.preview.Preview(device=androidx.wear.tooling.preview.devices.WearDevices.SMALL_ROUND, showSystemUi=true, backgroundColor=4278190080L, showBackground=true, group="Locales", locale="zh-rTW") public @interface WearLocalePreview {
+  }
+
+  @androidx.compose.ui.tooling.preview.Preview(backgroundColor=4278190080L, showBackground=true) public @interface WearPreview {
+  }
+
+  public final class WearPreviewThemes implements androidx.compose.ui.tooling.preview.PreviewParameterProvider<com.google.android.horologist.compose.tools.ThemeValues> {
+    ctor public WearPreviewThemes();
+    method public kotlin.sequences.Sequence<com.google.android.horologist.compose.tools.ThemeValues> getValues();
+    property public kotlin.sequences.Sequence<com.google.android.horologist.compose.tools.ThemeValues> values;
+  }
+
+  public final class WidthConstrainedBoxKt {
+    method @androidx.compose.runtime.Composable public static void WidthConstrainedBox(optional java.util.List<androidx.compose.ui.unit.Dp> widths, optional float comfortableHeight, kotlin.jvm.functions.Function0<kotlin.Unit> content);
+  }
+
+}
+
+package com.google.android.horologist.compose.tools.a11y {
+
+  public final class TallPreviewKt {
+    method @androidx.compose.runtime.Composable public static void TallPreview(int width, int height, kotlin.jvm.functions.Function1<? super androidx.wear.compose.foundation.lazy.ScalingParams,kotlin.Unit> function);
+  }
+
+}
+
+package com.google.android.horologist.compose.tools.coil {
+
+  public final class FakeImageLoader implements coil.ImageLoader {
+    ctor public FakeImageLoader(kotlin.jvm.functions.Function2<? super coil.request.ImageRequest,? super kotlin.coroutines.Continuation<? super coil.request.ImageResult>,?> imageFn);
+    method public coil.request.Disposable enqueue(coil.request.ImageRequest request);
+    method public suspend Object? execute(coil.request.ImageRequest request, kotlin.coroutines.Continuation<? super coil.request.ImageResult>);
+    method public coil.ComponentRegistry getComponents();
+    method public coil.request.DefaultRequestOptions getDefaults();
+    method public coil.disk.DiskCache? getDiskCache();
+    method public coil.memory.MemoryCache? getMemoryCache();
+    method public coil.ImageLoader.Builder newBuilder();
+    method public inline void override(kotlin.jvm.functions.Function0<kotlin.Unit> function);
+    method public void shutdown();
+    property public coil.ComponentRegistry components;
+    property public coil.request.DefaultRequestOptions defaults;
+    property public coil.disk.DiskCache? diskCache;
+    property public coil.memory.MemoryCache? memoryCache;
+    field public static final com.google.android.horologist.compose.tools.coil.FakeImageLoader.Companion Companion;
+    field public static final String TestUriPrefix = "android.resource://com.google.android.horologist.compose.tools/";
+  }
+
+  public static final class FakeImageLoader.Companion {
+    method public com.google.android.horologist.compose.tools.coil.FakeImageLoader Fixed(@DrawableRes int resId);
+    method public Integer? dataAsResourceId(Object? data);
+    method public com.google.android.horologist.compose.tools.coil.FakeImageLoader getNever();
+    method public com.google.android.horologist.compose.tools.coil.FakeImageLoader getNotFound();
+    method public com.google.android.horologist.compose.tools.coil.FakeImageLoader getResources();
+    method public int getTestIconResource();
+    method public String getTestIconResourceUri();
+    method public coil.request.ImageResult loadErrorBitmap(coil.request.ImageRequest request);
+    method public coil.request.ImageResult loadSuccessBitmap(android.content.Context context, coil.request.ImageRequest request, @DrawableRes int id);
+    property public final com.google.android.horologist.compose.tools.coil.FakeImageLoader Never;
+    property public final com.google.android.horologist.compose.tools.coil.FakeImageLoader NotFound;
+    property public final com.google.android.horologist.compose.tools.coil.FakeImageLoader Resources;
+    property public final int TestIconResource;
+    property public final String TestIconResourceUri;
+  }
+
+}
+

@@ -14,11 +14,57 @@
   ~ limitations under the License.
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">Horologist Sample</string>
     <string name="nav_activity">Nav Scaffold Sample</string>
     <string name="scratch">Scratch</string>
     <string name="tile_basic_title">Basic tile</string>
     <string name="tile_description">Basic tile description</string>
     <string name="tile_text">Hello world</string>
+    <string name="tile_sample_label">Sample Tile</string>
+    <string name="sample_tile_description">Sample tile description</string>
+
+    <string name="sectionedlist_samples_menu">SectionedList Samples</string>
+    <string name="sectionedlist_stateless_sections_menu">Stateless sections</string>
+    <string name="sectionedlist_stateful_sections_menu">Stateful sections</string>
+    <string name="sectionedlist_expandable_sections_menu">Expandable sections</string>
+    <string name="sectionedlist_samples_title">SectionedList samples</string>
+    <string name="sectionedlist_recommendations_title">Recommendations</string>
+    <string name="sectionedlist_trending_title">Trending</string>
+    <string name="sectionedlist_downloads_button">Downloads</string>
+    <string name="sectionedlist_your_library_button">Your library</string>
+    <string name="sectionedlist_settings_button">Settings</string>
+    <string name="sectionedlist_see_more_button">See more</string>
+    <string name="sectionedlist_failed_to_load">Failed to load, tap to try again.</string>
+    <string name="sectionedlist_my_tasks">My tasks</string>
+    <string name="sectionedlist_today">Today</string>
+    <string name="sectionedlist_tomorrow">Tomorrow</string>
+    <string name="sectionedlist_later_week">Later this week</string>
+    <string name="sectionedlist_more_tasks">More tasks…</string>
+
+    <string name="rotarymenu_scroll">Scroll</string>
+    <string name="rotarymenu_scroll_list">Scroll list</string>
+    <string name="rotarymenu_scroll_list_reversed">Reversed scroll list</string>
+    <string name="rotarymenu_scroll_with_fling">Scroll with fling</string>
+    <string name="rotarymenu_snap">Snap</string>
+    <string name="rotarymenu_snap_list">Snap list</string>
+
+    <array name="rotarymenu_item_sizes">
+        <item>Small items</item>
+        <item>Medium cards</item>
+        <item>Very big cards</item>
+        <item>Different cards</item>
+        <item>10 small 1 big</item>
+    </array>
+
+    <string name="rotarymenu_chips_size">Chips size</string>
+    <string name="rotarymenu_haptics_on">Haptics on</string>
+    <string name="rotarymenu_haptics_off">Haptics off</string>
+    <string name="rotarymenu_show_list">Show list</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
+    <string name="paging_items_waiting_message">Waiting for items to load from the backend</string>
+    <string name="paging_chip_content_description">Paging</string>
+    <string name="paging_chip_label">Paging</string>
+    <string name="pager_screen_chip_label">Pager Screen</string>
+    <string name="pager_screen_chip_content_description">Pager Screen</string>
 </resources>

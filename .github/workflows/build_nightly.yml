@@ -1,0 +1,63 @@
+name: Build & test (nightly release)
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # 2am UTC
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        with:
+          lfs: 'true'
+
+      - name: Copy CI gradle.properties
+        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
+
+      - name: set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 17
+
+      - name: Generate cache key
+        run: ./checksum.sh checksum.txt
+
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches/modules-*
+            ~/.gradle/caches/jars-*
+            ~/.gradle/caches/build-cache-*
+          key: gradle-${{ hashFiles('checksum.txt') }}
+
+      - name: Build (Release)
+        run: |
+          ./gradlew --scan --stacktrace \
+              assembleRelease
+
+      - name: Code analysis
+        run: |
+          ./gradlew --scan --stacktrace \
+              lintRelease
+
+      - name: Upload test results and reports
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-results
+          path: |
+            **/build/test-results/*
+            **/build/reports/*
+
+      - name: Upload apks
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: apks
+          path: |
+            **/build/outputs/apk/release/*.apk

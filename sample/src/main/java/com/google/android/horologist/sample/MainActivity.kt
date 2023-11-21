@@ -19,66 +19,16 @@ package com.google.android.horologist.sample
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.wear.compose.material.Scaffold
-import androidx.wear.compose.navigation.SwipeDismissableNavHost
-import androidx.wear.compose.navigation.composable
-import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
-import com.google.android.horologist.audioui.VolumeScreen
+import com.google.android.horologist.sample.di.SampleAppDI
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        SampleAppDI.inject(this)
+
         setContent {
-            WearApp()
-        }
-    }
-}
-
-@Composable
-fun WearApp() {
-    val navController = rememberSwipeDismissableNavController()
-
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-    ) {
-        SwipeDismissableNavHost(
-            navController = navController,
-            startDestination = Screen.Menu.route,
-        ) {
-            composable(route = Screen.Menu.route) {
-                MenuScreen(
-                    modifier = Modifier.fillMaxSize(),
-                    navigateToRoute = { route -> navController.navigate(route) },
-                )
-            }
-            composable(Screen.FillMaxRectangle.route) {
-                FillMaxRectangleScreen()
-            }
-            composable(Screen.Volume.route) {
-                val focusRequester = remember { FocusRequester() }
-
-                VolumeScreen(focusRequester = focusRequester)
-
-                LaunchedEffect(Unit) {
-                    focusRequester.requestFocus()
-                }
-            }
-            composable(Screen.FadeAway.route) {
-                FadeAwayScreenLazyColumn()
-            }
-            composable(Screen.FadeAwaySLC.route) {
-                FadeAwayScreenScalingLazyColumn()
-            }
-            composable(Screen.FadeAwayColumn.route) {
-                FadeAwayScreenColumn()
-            }
+            SampleWearApp()
         }
     }
 }

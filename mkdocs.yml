@@ -15,17 +15,51 @@ repo_url: 'https://github.com/google/horologist'
 # Navigation
 nav:
   - 'Overview': index.md
+  - 'API': api/
+  - 'Auth':
+      - 'Overview': auth-overview.md
+      - 'Sample apps': auth-sample-apps.md
+      - 'Auth Composables lib': auth-composables.md
+      - 'Auth UI lib': auth-ui.md
+      - 'Auth Data lib': auth-data.md
+      - 'Auth Data Phone lib': auth-data-phone.md
+      - 'Token sharing guide': auth-tokenshare-guide.md
+      - 'Google Sign-In guide': auth-googlesignin-guide.md
+  - 'Audio':
+      - 'Audio Guide': audio.md
+      - 'Audio UI Guide': audio-ui.md
+  - 'Composables':
+      - 'Guide': composables.md
+  - 'Compose Layout':
+      - 'Guide': compose-layout.md
+  - 'Compose Material':
+      - 'Guide': compose-material.md
+  - 'Data Layer':
+      - 'Guide': datalayer.md
+      - 'App Helpers': datalayer-helpers-guide.md
+  - 'Media':
+      - 'Overview': media-toolkit.md
+      - 'Simple app guide': simple-media-app-guide.md
+      - 'Media UI lib': media-ui.md
+      - 'Media Domain lib': media.md
+      - 'Media Data lib': media-data.md
+      - 'Media3 Backend lib': media3-backend.md
+      - 'Media sample app': media-sample.md
+      - 'Stateful PlayerScreen Guide': media-playerscreen.md
+  - 'Network Awareness':
+      - 'Guide': network-awareness.md
+  - 'Tiles':
+      - 'Guide': tiles.md
   - 'Snapshots': using-snapshot-version.md
   - 'Contributing': contributing.md
   - 'Maintainers':
-    - 'Update guide': updating.md
+      - 'Update guide': updating.md
 
 # Configuration
 theme:
   name: 'material'
   language: 'en'
-  icon:
-    logo: material/music-clef-treble
+  logo: logo/logo-white.svg
   palette:
     primary: 'black'
     accent: 'deep orange'

@@ -21,13 +21,11 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalAccessibilityManager
-import androidx.wear.compose.material.Button
-import androidx.wear.compose.material.MaterialTheme
+import androidx.compose.ui.text.style.TextAlign
+import androidx.wear.compose.material.CompactChip
 import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.dialog.Confirmation
-import com.google.android.horologist.compose.navscaffold.ExperimentalComposeLayoutApi
 
-@ExperimentalComposeLayoutApi
 @Composable
 public fun DialogSnackbarHost(
     hostState: SnackbarHostState,
@@ -38,20 +36,25 @@ public fun DialogSnackbarHost(
         modifier = modifier.alpha(0.9f),
         snackbar = {
             val duration = it.duration.toMillis(
-                it.actionLabel != null, accessibilityManager
+                it.actionLabel != null,
+                accessibilityManager,
             )
             Confirmation(
                 onTimeout = { it.dismiss() },
-                durationMillis = duration
+                durationMillis = duration,
             ) {
                 Text(
                     modifier = Modifier.align(CenterHorizontally),
+                    textAlign = TextAlign.Center,
                     text = it.message,
-                    style = MaterialTheme.typography.display3
                 )
-                Button(modifier = Modifier.align(CenterHorizontally), onClick = { it.dismiss() }) {
-                    Text(text = "Dismiss")
-                }
+                CompactChip(
+                    modifier = Modifier.align(CenterHorizontally),
+                    onClick = { it.dismiss() },
+                    label = {
+                        Text(text = "Dismiss")
+                    },
+                )
             }
         },
         hostState = hostState,

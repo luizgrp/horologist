@@ -14,36 +14,54 @@
  * limitations under the License.
  */
 
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package com.google.android.horologist.navsample
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.wear.compose.foundation.edgeSwipeToDismiss
+import androidx.wear.compose.foundation.rememberSwipeToDismissBoxState
 import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.Chip
-import androidx.wear.compose.material.ScalingLazyListState
 import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.VignettePosition
 import androidx.wear.compose.material.dialog.Alert
-import com.google.accompanist.pager.rememberPagerState
-import com.google.android.horologist.audioui.VolumeScreen
+import androidx.wear.compose.navigation.rememberSwipeDismissableNavHostState
+import com.google.android.horologist.audio.ui.VolumeScreen
 import com.google.android.horologist.compose.navscaffold.NavScaffoldViewModel
 import com.google.android.horologist.compose.navscaffold.WearNavScaffold
-import com.google.android.horologist.compose.navscaffold.scalingLazyColumnComposable
+import com.google.android.horologist.compose.navscaffold.composable
 import com.google.android.horologist.compose.navscaffold.scrollStateComposable
-import com.google.android.horologist.compose.navscaffold.wearNavComposable
+import com.google.android.horologist.compose.navscaffold.scrollable
 import com.google.android.horologist.compose.pager.PagerScreen
 import com.google.android.horologist.compose.snackbar.DialogSnackbarHost
 import com.google.android.horologist.navsample.snackbar.SnackbarViewModel
+import com.google.android.horologist.networks.NetworkStatusViewModel
+import com.google.android.horologist.networks.ui.DataUsageTimeText
 
 @Composable
-fun NavWearApp(navController: NavHostController) {
+fun NavWearApp(
+    navController: NavHostController,
+) {
     val snackbarViewModel = viewModel<SnackbarViewModel>(factory = SnackbarViewModel.Factory)
+    val networkStatusViewModel =
+        viewModel<NetworkStatusViewModel>(factory = NetworkStatusViewModel.Factory)
+
+    val swipeDismissState = rememberSwipeToDismissBoxState()
+    val navState = rememberSwipeDismissableNavHostState(swipeDismissState)
+
+    val state by networkStatusViewModel.state.collectAsStateWithLifecycle()
 
     WearNavScaffold(
         startDestination = NavScreen.Menu.route,
@@ -51,49 +69,53 @@ fun NavWearApp(navController: NavHostController) {
         snackbar = {
             DialogSnackbarHost(
                 hostState = snackbarViewModel.snackbarHostState,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
             )
-        }
+        },
+        timeText = {
+            DataUsageTimeText(
+                modifier = it,
+                showData = true,
+                networkStatus = state.networks,
+                networkUsage = state.dataUsage,
+            )
+        },
+        state = navState,
     ) {
-        scalingLazyColumnComposable(
+        scrollable(
             NavScreen.Menu.route,
-            scrollStateBuilder = { ScalingLazyListState(initialCenterItemIndex = 0) }
         ) {
             NavMenuScreen(
                 navigateToRoute = { route -> navController.navigate(route) },
                 scrollState = it.scrollableState,
-                focusRequester = it.viewModel.focusRequester
             )
         }
 
-        scalingLazyColumnComposable(
+        scrollable(
             NavScreen.ScalingLazyColumn.route,
-            scrollStateBuilder = { ScalingLazyListState() }
         ) {
-            it.viewModel.timeTextMode = NavScaffoldViewModel.TimeTextMode.FadeAway
+            it.timeTextMode = NavScaffoldViewModel.TimeTextMode.ScrollAway
             it.viewModel.vignettePosition =
                 NavScaffoldViewModel.VignetteMode.On(VignettePosition.TopAndBottom)
-            it.viewModel.positionIndicatorMode =
+            it.positionIndicatorMode =
                 NavScaffoldViewModel.PositionIndicatorMode.On
 
             BigScalingLazyColumn(
                 scrollState = it.scrollableState,
-                focusRequester = it.viewModel.focusRequester
             )
         }
 
         scrollStateComposable(
             NavScreen.Column.route,
-            scrollStateBuilder = { ScrollState(0) }
+            scrollStateBuilder = { ScrollState(initial = 0) },
         ) {
             BigColumn(
                 scrollState = it.scrollableState,
-                focusRequester = it.viewModel.focusRequester
             )
         }
 
-        wearNavComposable(NavScreen.Dialog.route) { _, viewModel ->
-            viewModel.timeTextMode = NavScaffoldViewModel.TimeTextMode.Off
+        composable(NavScreen.Dialog.route) {
+            it.timeTextMode = NavScaffoldViewModel.TimeTextMode.Off
 
             Alert(title = { Text("Error") }) {
                 item {
@@ -102,7 +124,7 @@ fun NavWearApp(navController: NavHostController) {
             }
         }
 
-        wearNavComposable(NavScreen.Snackbar.route) { _, _ ->
+        composable(NavScreen.Snackbar.route) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Button(onClick = { snackbarViewModel.showMessage("Test") }) {
                     Text(text = "Test")
@@ -110,19 +132,28 @@ fun NavWearApp(navController: NavHostController) {
             }
         }
 
-        wearNavComposable(NavScreen.Pager.route) { _, viewModel ->
-            viewModel.timeTextMode = NavScaffoldViewModel.TimeTextMode.Off
+        composable(NavScreen.Pager.route) {
+            it.timeTextMode = NavScaffoldViewModel.TimeTextMode.Off
 
-            val state = rememberPagerState()
-            PagerScreen(modifier = Modifier.fillMaxSize(), count = 10, state = state) {
+            val pagerState = rememberPagerState { 10 }
+            PagerScreen(
+                // When using Modifier.edgeSwipeToDismiss, it is required that the element on
+                // which the modifier applies exists within a SwipeToDismissBox which shares
+                // the same state. Here, swipeDismissState is shared with
+                // our SwipeDismissableNavHost, which in turns passes it to its SwipeToDismissBox.
+                modifier = Modifier
+                    .fillMaxSize()
+                    .edgeSwipeToDismiss(swipeDismissState),
+                state = pagerState,
+            ) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text(text = "Screen $it")
                 }
             }
         }
 
-        wearNavComposable(NavScreen.Volume.route) { _, viewModel ->
-            VolumeScreen(focusRequester = viewModel.focusRequester)
+        composable(NavScreen.Volume.route) {
+            VolumeScreen()
         }
     }
 }

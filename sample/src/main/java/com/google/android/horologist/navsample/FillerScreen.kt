@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:OptIn(ExperimentalWearFoundationApi::class)
+
 package com.google.android.horologist.navsample
 
 import androidx.compose.foundation.ScrollState
@@ -24,18 +26,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.unit.dp
-import androidx.wear.compose.material.ScalingLazyColumn
-import androidx.wear.compose.material.ScalingLazyListState
+import androidx.wear.compose.foundation.ExperimentalWearFoundationApi
+import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
+import androidx.wear.compose.foundation.lazy.ScalingLazyListState
+import androidx.wear.compose.foundation.rememberActiveFocusRequester
 import androidx.wear.compose.material.Text
-import com.google.android.horologist.compose.navscaffold.scrollableColumn
+import com.google.android.horologist.compose.rotaryinput.rotaryWithScroll
 
 @Composable
-fun FillerScreen(modifier: Modifier = Modifier, label: String) {
+fun FillerScreen(label: String, modifier: Modifier = Modifier) {
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Text(label)
     }
@@ -43,16 +45,17 @@ fun FillerScreen(modifier: Modifier = Modifier, label: String) {
 
 @Composable
 fun BigScalingLazyColumn(
-    modifier: Modifier = Modifier,
     scrollState: ScalingLazyListState,
-    focusRequester: FocusRequester = remember { FocusRequester() }
+    modifier: Modifier = Modifier,
 ) {
+    val focusRequester = rememberActiveFocusRequester()
+
     ScalingLazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .scrollableColumn(focusRequester, scrollState),
+            .rotaryWithScroll(scrollState, focusRequester),
         state = scrollState,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         items(100) {
             Text("i = $it")
@@ -62,16 +65,17 @@ fun BigScalingLazyColumn(
 
 @Composable
 fun BigColumn(
-    modifier: Modifier = Modifier,
     scrollState: ScrollState,
-    focusRequester: FocusRequester = remember { FocusRequester() },
+    modifier: Modifier = Modifier,
 ) {
+    val focusRequester = rememberActiveFocusRequester()
+
     Column(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
-            .scrollableColumn(focusRequester, scrollState),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .rotaryWithScroll(scrollState, focusRequester),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(modifier = Modifier.size(30.dp))
         (1..100).forEach {

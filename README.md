@@ -1,47 +1,137 @@
-Horologist is a group of libraries that aim to supplement Wear OS developers with features that are commonly required by developers but not yet available.
+<div align="center">
+  <img src="./logo/logo-large.svg" width="343" height="100" alt="Horologist logo">
+</div>
 
-Horologist is a labs like environment for new Wear APIs. We use it to help fill known gaps in the Horologist toolkit, experiment with new APIs and to gather insight into the development experience of developing these library. The goal of these libraries is to upstream them into Jetpack, at which point they will be deprecated and removed from Horologist. Some libraries may be useful but specific enough that they do not ever graduate.
+Horologist is a group of libraries that aim to supplement Wear OS developers with features that are
+commonly required by developers but not yet available.
+
+
+## Maintained Versions
+
+The currently maintained branches of Horologist are.
+
+| Version | Branch | Description |
+| ------- | ------ | ----------- |
+| 0.4.x | release-0.4.x | Wear Compose 1.2.x (stable) and Media3, and generally stable APIs. |
+| 0.5.x | main | Wear Compose 1.3 alpha, Media3 and generally latest alphas of Androidx. |
 
 ---
 
-## Tiles
+## 🎵 Media
 
-Kotlin favoured coroutines.
+Horologist provides the Media Toolkit: a set of libraries to build Media apps on Wear OS and a
+sample app that you can run to see the toolkit in action.
 
-[horologist-tiles](./tiles)
+The toolkit includes:
 
-## Compose Layout
+- [horologist-media-ui](https://google.github.io/horologist/media-ui): common media UI components and screens like `PlayerScreen`.
+- [horologist-media](https://google.github.io/horologist/media): domain model for Media related functionality. Provides an
+  abstraction
+  to the UI module (`horologist-media-ui`) that is agnostic to the Player implementation.
+- [horologist-media-data](https://google.github.io/horologist/media-data): implementation of the domain module (`horologist-media`)
+  using [Media3](https://developer.android.com/jetpack/androidx/releases/media3).
+- [horologist-media3-backend](https://google.github.io/horologist/media3-backend): Player on top of Media3 including
+  functionalities
+  such as avoiding playing music on the watch speaker.
+- [media sample](https://google.github.io/horologist/media-sample): sample app to listen to downloaded music.
+
+Player Screen | Browse Screen | Entity Screen
+:------------:|:-------------:|:-------------:
+<img src="https://media.githubusercontent.com/media/google/horologist/main/docs/media-ui/playerscreen.png" height="120" width="120" > | <img src="https://media.githubusercontent.com/media/google/horologist/main/docs/media-ui/browse.png" height="120" width="120" > | <img src="https://media.githubusercontent.com/media/google/horologist/main/docs/media-ui/detail.png" height="120" width="120" >
+
+## 📅 Composables
+
+High quality prebuilt composables, such as Time and Date pickers.
+
+- [horologist-composables](https://google.github.io/horologist/composables)
+
+DatePicker             |  TimePickerWith12HourClock |  TimePicker
+:-------------------------:|:-------------------------:|:-------------------------:
+<img src="https://media.githubusercontent.com/media/google/horologist/main/docs/composables/date_picker.png" height="120" width="120" >  |  <img src="https://media.githubusercontent.com/media/google/horologist/main/docs/composables/time_12h_picker.png" height="120" width="120"> | <img src="https://media.githubusercontent.com/media/google/horologist/main/docs/composables/time_24h_picker.png" height="120" width="120">
+
+SegmentedProgressIndicator | SquareSegmentedProgressIndicator
+:----------------------------------------------------------------------------------------------------------------------------------------------:|:-------------------------:
+<img src="https://media.githubusercontent.com/media/google/horologist/main/docs/composables/segmented_progress_indicator.png" height="120" width="120"> | <img src="https://media.githubusercontent.com/media/google/horologist/main/docs/composables/square_segmented_progress_indicator.png" height="120" width="120">
+
+## 📐 Compose Layout
 
 Layout related functionality such as a Navigation Aware Scaffold.
 
-[horologist-compose-layout](./compose-layout)
+- [horologist-compose-layout](https://google.github.io/horologist/compose-layout)
 
-## Audio and UI
+|                                                             fillMaxRectangle()                                                             |
+|:------------------------------------------------------------------------------------------------------------------------------------------:|
+| <img src="https://media.githubusercontent.com/media/google/horologist/main/docs/compose-layout/fill_max_rectangle.png" height="120" width="120" >  |
 
-Domain model for Audio related functionality.  Volume Control, Output switching.
+## 🔲 Compose Material
+
+Opinionated implementation of the components of
+the [Wear Material Compose library](https://developer.android.com/jetpack/androidx/releases/wear-compose)
+, based on the specifications
+of [Wear Material Design Kit](https://developer.android.com/design/ui/wear/guides/foundations/download)
+.
+
+- [horologist-compose-material](https://google.github.io/horologist/compose-material)
+
+## 🔊 Audio and UI
+
+Domain model for Audio related functionality. Volume Control, Output switching.
 Subscribing to a Flow of changes in audio or output.
 
-[horologist-audio](./audio)
-[horologist-audio-ui](./audio-ui)
+- [horologist-audio](https://google.github.io/horologist/audio)
+- [horologist-audio-ui](https://google.github.io/horologist/audio-ui)
 
-### Why the name?
+|                                                          VolumeScreen                                                          |
+|:------------------------------------------------------------------------------------------------------------------------------:|
+| <img src="https://media.githubusercontent.com/media/google/horologist/main/docs/audio-ui/volume_screen.png" height="120" width="120" > |
 
-The name mirrors the [Accompanist](https://github.com/google/accompanist) name, and is also Watch related.
+## 🔐 Auth
+
+Libraries to help developers to build apps following
+the [Sign-In guidelines for Wear OS](https://developer.android.com/training/wearables/design/sign-in)
+.
+
+- [horologist-auth-composables](https://google.github.io/horologist/auth-composables): composable screens for authentication use
+  cases, with no dependency on the `auth-data` library.
+- [horologist-auth-ui](https://google.github.io/horologist/auth-ui): composable screens for authentication use cases, with integration
+  with the `auth-data` library
+- [horologist-auth-data](https://google.github.io/horologist/auth-data): implementation for Wear apps for most of the authentication
+  methods listed in
+  the [Authentication on wearables](https://developer.android.com/training/wearables/apps/auth-wear)
+  guide.
+- [horologist-auth-data-phone](https://google.github.io/horologist/auth-data-phone): implementation for Mobile apps for some of the
+  authentication methods provided by the `auth-data` library.
+- [sample wear](https://google.github.io/horologist/auth-sample-apps/#wear-sample): sample wear app to authenticate using different methods.
+- [sample phone](https://google.github.io/horologist/auth-sample-apps/#phone-sample): sample phone app to authenticate using different methods.
+
+## ☰ Tiles
+
+Kotlin coroutines flavoured TileService.
+
+[horologist-tiles](https://google.github.io/horologist/tiles)
+
+---
+
+## Why the name?
+
+The name mirrors the [Accompanist](https://github.com/google/accompanist) name, and is also Watch
+related.
 
 https://en.wiktionary.org/wiki/horologist
 
 > horologist (Noun)
->    Someone who makes or repairs timepieces, watches or clocks.
+> Someone who makes or repairs timepieces, watches or clocks.
 
 ## Contributions
 
-Please contribute! We will gladly review any pull requests.
-Make sure to read the [Contributing](CONTRIBUTING.md) page first though.
+Please contribute! We will gladly review any pull requests submitted.
+Make sure to read the [Contributing](CONTRIBUTING.md) page to know what our expectations of
+contributions are.
 
 ## License
 
 ```
-Copyright 2022 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

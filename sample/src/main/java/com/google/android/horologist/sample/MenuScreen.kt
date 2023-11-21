@@ -16,44 +16,47 @@
 
 package com.google.android.horologist.sample
 
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.wear.compose.material.Chip
 import androidx.wear.compose.material.ChipDefaults
-import androidx.wear.compose.material.ScalingLazyColumn
-import androidx.wear.compose.material.ScalingLazyListState
+import androidx.wear.compose.material.ListHeader
 import androidx.wear.compose.material.Text
-import androidx.wear.compose.material.rememberScalingLazyListState
-import com.google.android.horologist.compose.navscaffold.scrollableColumn
+import androidx.wear.compose.ui.tooling.preview.WearPreviewDevices
+import com.google.android.horologist.compose.layout.ScalingLazyColumn
+import com.google.android.horologist.compose.layout.ScalingLazyColumnState
+import com.google.android.horologist.compose.layout.belowTimeTextPreview
+import com.google.android.horologist.compose.material.Chip
+import java.time.LocalDateTime
 
 @Composable
 fun MenuScreen(
     modifier: Modifier = Modifier,
     navigateToRoute: (String) -> Unit,
-    scrollState: ScalingLazyListState = rememberScalingLazyListState(),
-    focusRequester: FocusRequester = remember { FocusRequester() }
+    time: LocalDateTime,
+    columnState: ScalingLazyColumnState,
 ) {
     ScalingLazyColumn(
-        modifier = modifier
-            .scrollableColumn(focusRequester, scrollState)
-            .focusRequester(focusRequester)
-            .focusable(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        state = scrollState
+        columnState = columnState,
+        modifier = modifier.fillMaxSize(),
     ) {
+        item {
+            ListHeader {
+                Text(text = "Samples")
+            }
+        }
+        item {
+            NetworkChip { navigateToRoute(Screen.Network.route) }
+        }
+        item {
+            DataLayerNodesChip { navigateToRoute(Screen.DataLayerNodes.route) }
+        }
         item {
             FillMaxRectangleChip(navigateToRoute)
         }
@@ -61,18 +64,64 @@ fun MenuScreen(
             VolumeScreenChip(navigateToRoute)
         }
         item {
-            FadeAwayChip("Fade Away") { navigateToRoute(Screen.FadeAway.route) }
+            ListHeader {
+                Text(text = "Scroll Away")
+            }
         }
         item {
-            FadeAwayChip("Fade Away SLC") { navigateToRoute(Screen.FadeAwaySLC.route) }
+            ScrollAwayChip("Scroll Away") { navigateToRoute(Screen.ScrollAway.route) }
         }
         item {
-            FadeAwayChip("Fade Away Column") { navigateToRoute(Screen.FadeAwayColumn.route) }
+            ScrollAwayChip("Scroll Away SLC") { navigateToRoute(Screen.ScrollAwaySLC.route) }
         }
-    }
-
-    LaunchedEffect(Unit) {
-        focusRequester.requestFocus()
+        item {
+            ScrollAwayChip("Scroll Away Column") { navigateToRoute(Screen.ScrollAwayColumn.route) }
+        }
+        item {
+            ListHeader {
+                Text(text = "Composables")
+            }
+        }
+        item {
+            TimePickerChip(time) { navigateToRoute(Screen.TimePicker.route) }
+        }
+        item {
+            DatePickerChip(time) { navigateToRoute(Screen.DatePicker.route) }
+        }
+        item {
+            TimeWithSecondsPickerChip(time) { navigateToRoute(Screen.TimeWithSecondsPicker.route) }
+        }
+        item {
+            TimeWithoutSecondsPickerChip(time) { navigateToRoute(Screen.TimeWithoutSecondsPicker.route) }
+        }
+        item {
+            Chip(
+                label = stringResource(id = R.string.sectionedlist_samples_menu),
+                modifier = modifier.fillMaxWidth(),
+                onClick = { navigateToRoute(Screen.SectionedListMenuScreen.route) },
+            )
+        }
+        item {
+            ListHeader {
+                Text(text = "Rotary Scrolling")
+            }
+        }
+        item {
+            androidx.wear.compose.material.Chip(
+                label = {
+                    Text(text = "Rotary scroll")
+                },
+                modifier = modifier.fillMaxWidth(),
+                onClick = { navigateToRoute(Screen.RotaryMenuScreen.route) },
+                colors = ChipDefaults.primaryChipColors(),
+            )
+        }
+        item {
+            PagingChip { navigateToRoute(Screen.Paging.route) }
+        }
+        item {
+            PagerScreenChip { navigateToRoute(Screen.PagerScreen.route) }
+        }
     }
 }
 
@@ -81,37 +130,29 @@ fun SampleChip(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     label: String,
-    content: (@Composable () -> Unit)? = null
+    content: (@Composable () -> Unit)? = null,
 ) {
-    Chip(
-        modifier = modifier,
+    androidx.wear.compose.material.Chip(
+        modifier = modifier.fillMaxWidth(),
         onClick = onClick,
-        colors = ChipDefaults.primaryChipColors(),
-    ) {
-        Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
+        label = {
             Text(modifier = Modifier.weight(1f), text = label)
             if (content != null) {
                 Box(modifier = Modifier.size(36.dp), contentAlignment = Alignment.Center) {
                     content()
                 }
             }
-        }
-    }
+        },
+    )
 }
 
-@Preview(
-    device = Devices.WEAR_OS_LARGE_ROUND,
-    showSystemUi = true,
-    backgroundColor = 0xff000000,
-    showBackground = true
-)
-@Preview(
-    device = Devices.WEAR_OS_SQUARE,
-    showSystemUi = true,
-    backgroundColor = 0xff000000,
-    showBackground = true
-)
+@WearPreviewDevices
 @Composable
 fun MenuScreenPreview() {
-    MenuScreen(modifier = Modifier.fillMaxSize(), navigateToRoute = {})
+    MenuScreen(
+        modifier = Modifier.fillMaxSize(),
+        navigateToRoute = {},
+        time = LocalDateTime.now(),
+        columnState = belowTimeTextPreview(),
+    )
 }

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:OptIn(ExperimentalWearFoundationApi::class)
+
 package com.google.android.horologist.compose.navscaffold
 
 import androidx.compose.foundation.ScrollState
@@ -22,54 +24,63 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.wear.compose.foundation.ExperimentalWearFoundationApi
+import androidx.wear.compose.foundation.HierarchicalFocusCoordinator
+import androidx.wear.compose.foundation.lazy.ScalingLazyListState
 import androidx.wear.compose.material.PositionIndicator
 import androidx.wear.compose.material.Scaffold
-import androidx.wear.compose.material.ScalingLazyListState
 import androidx.wear.compose.material.TimeText
 import androidx.wear.compose.material.Vignette
 import androidx.wear.compose.navigation.SwipeDismissableNavHost
+import androidx.wear.compose.navigation.SwipeDismissableNavHostState
 import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.currentBackStackEntryAsState
-import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
-import com.google.android.horologist.compose.layout.fadeAway
-import com.google.android.horologist.compose.layout.fadeAwayLazyList
-import com.google.android.horologist.compose.layout.fadeAwayScalingLazyList
+import androidx.wear.compose.navigation.rememberSwipeDismissableNavHostState
+import com.google.android.horologist.annotations.ExperimentalHorologistApi
+import com.google.android.horologist.compose.layout.ScalingLazyColumnDefaults
+import com.google.android.horologist.compose.layout.ScalingLazyColumnState
+import com.google.android.horologist.compose.layout.scrollAway
 
 /**
  * A Navigation and Scroll aware [Scaffold].
  *
- * In addition to [NavGraphBuilder.composable], 3 additional extensions are supported
+ * In addition to [NavGraphBuilder.scrollable], 3 additional extensions are supported
  * [scalingLazyColumnComposable], [scrollStateComposable] and
  * [lazyListComposable].
  *
  * These should be used to build the [ScrollableState] or [FocusRequester] as well as
  * configure the behaviour of [TimeText], [PositionIndicator] or [Vignette].
  */
-@ExperimentalComposeLayoutApi
 @Composable
 public fun WearNavScaffold(
     startDestination: String,
+    navController: NavHostController,
     modifier: Modifier = Modifier,
-    navController: NavHostController = rememberSwipeDismissableNavController(),
     snackbar: @Composable () -> Unit = {},
     timeText: @Composable (Modifier) -> Unit = {
         TimeText(
-            modifier = it
+            modifier = it,
         )
     },
+    state: SwipeDismissableNavHostState = rememberSwipeDismissableNavHostState(),
     builder: NavGraphBuilder.() -> Unit,
 ) {
     val currentBackStackEntry: NavBackStackEntry? by navController.currentBackStackEntryAsState()
@@ -78,49 +89,16 @@ public fun WearNavScaffold(
         viewModel(viewModelStoreOwner = it)
     }
 
+    val scrollState: State<ScrollableState?> = remember(viewModel) {
+        derivedStateOf {
+            viewModel?.timeTextScrollableState()
+        }
+    }
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         timeText = {
-            key(currentBackStackEntry?.destination?.route) {
-                when (viewModel?.timeTextMode) {
-                    NavScaffoldViewModel.TimeTextMode.FadeAway -> {
-                        when (viewModel.scrollType) {
-                            NavScaffoldViewModel.ScrollType.ScrollState -> {
-                                timeText(
-                                    Modifier.fadeAway {
-                                        viewModel.scrollableState as ScrollState
-                                    }
-                                )
-                            }
-                            NavScaffoldViewModel.ScrollType.ScalingLazyColumn -> {
-                                val scalingLazyListState =
-                                    viewModel.scrollableState as ScalingLazyListState
-
-                                timeText(
-                                    Modifier.fadeAwayScalingLazyList(viewModel.initialIndex!!) {
-                                        scalingLazyListState
-                                    }
-                                )
-                            }
-                            NavScaffoldViewModel.ScrollType.LazyList -> {
-                                timeText(
-                                    Modifier.fadeAwayLazyList {
-                                        viewModel.scrollableState as LazyListState
-                                    }
-                                )
-                            }
-                            else -> {
-                                timeText(Modifier)
-                            }
-                        }
-                    }
-                    NavScaffoldViewModel.TimeTextMode.On -> {
-                        timeText(Modifier)
-                    }
-                    else -> {
-                    }
-                }
-            }
+            timeText(Modifier.scrollAway(scrollState))
         },
         positionIndicator = {
             key(currentBackStackEntry?.destination?.route) {
@@ -138,12 +116,13 @@ public fun WearNavScaffold(
                     Vignette(vignettePosition = vignettePosition.position)
                 }
             }
-        }
+        },
     ) {
         Box {
             SwipeDismissableNavHost(
                 navController = navController,
                 startDestination = startDestination,
+                state = state,
             ) {
                 builder()
             }
@@ -153,60 +132,78 @@ public fun WearNavScaffold(
     }
 }
 
-@ExperimentalComposeLayoutApi
 @Composable
 private fun NavPositionIndicator(viewModel: NavScaffoldViewModel) {
     when (viewModel.scrollType) {
         NavScaffoldViewModel.ScrollType.ScrollState ->
             PositionIndicator(
-                scrollState = viewModel.scrollableState as ScrollState
+                scrollState = viewModel.scrollableState as ScrollState,
             )
+
         NavScaffoldViewModel.ScrollType.ScalingLazyColumn -> {
             PositionIndicator(
-                scalingLazyListState = viewModel.scrollableState as ScalingLazyListState
+                scalingLazyListState = viewModel.scrollableState as ScalingLazyListState,
             )
         }
+
         NavScaffoldViewModel.ScrollType.LazyList ->
             PositionIndicator(
-                lazyListState = viewModel.scrollableState as LazyListState
+                lazyListState = viewModel.scrollableState as LazyListState,
             )
+
         else -> {}
     }
 }
-
-/**
- * The context items provided to a navigation composable.
- *
- * The [viewModel] can be used to customise the scaffold behaviour.
- */
-@ExperimentalComposeLayoutApi
-public data class ScaffoldContext<T : ScrollableState>(
-    val backStackEntry: NavBackStackEntry,
-    val scrollableState: T,
-    val viewModel: NavScaffoldViewModel,
-)
 
 /**
  * Add a screen to the navigation graph featuring a ScalingLazyColumn.
  *
  * The scalingLazyListState must be taken from the [ScaffoldContext].
  */
-@ExperimentalComposeLayoutApi
+@Deprecated(
+    "Use listComposable",
+)
 public fun NavGraphBuilder.scalingLazyColumnComposable(
     route: String,
     arguments: List<NamedNavArgument> = emptyList(),
     deepLinks: List<NavDeepLink> = emptyList(),
     scrollStateBuilder: () -> ScalingLazyListState,
-    content: @Composable (ScaffoldContext<ScalingLazyListState>) -> Unit
+    content: @Composable (ScaffoldContext<ScalingLazyListState>) -> Unit,
 ) {
     composable(route, arguments, deepLinks) {
-        val viewModel: NavScaffoldViewModel = viewModel(it)
+        FocusedDestination {
+            val viewModel: NavScaffoldViewModel = viewModel(it)
 
-        val scrollState = viewModel.initializeScalingLazyListState(scrollStateBuilder)
+            val scrollState = viewModel.initializeScalingLazyListState(scrollStateBuilder)
 
-        content(ScaffoldContext(it, scrollState, viewModel))
+            content(ScaffoldContext(it, scrollState, viewModel))
+        }
+    }
+}
 
-        it.ResumeAsNeeded(viewModel)
+/**
+ * Add a screen to the navigation graph featuring a ScalingLazyColumn.
+ *
+ * The [ScalingLazyColumnState] must be taken from the [ScrollableScaffoldContext].
+ */
+@ExperimentalHorologistApi
+public fun NavGraphBuilder.scrollable(
+    route: String,
+    arguments: List<NamedNavArgument> = emptyList(),
+    deepLinks: List<NavDeepLink> = emptyList(),
+    columnStateFactory: ScalingLazyColumnState.Factory = ScalingLazyColumnDefaults.responsive(),
+    content: @Composable (ScrollableScaffoldContext) -> Unit,
+) {
+    this@scrollable.composable(route, arguments, deepLinks) {
+        FocusedDestination {
+            val columnState = columnStateFactory.create()
+
+            val viewModel: NavScaffoldViewModel = viewModel(it)
+
+            viewModel.initializeScalingLazyListState(columnState)
+
+            content(ScrollableScaffoldContext(it, columnState, viewModel))
+        }
     }
 }
 
@@ -215,22 +212,21 @@ public fun NavGraphBuilder.scalingLazyColumnComposable(
  *
  * The scrollState must be taken from the [ScaffoldContext].
  */
-@ExperimentalComposeLayoutApi
 public fun NavGraphBuilder.scrollStateComposable(
     route: String,
     arguments: List<NamedNavArgument> = emptyList(),
     deepLinks: List<NavDeepLink> = emptyList(),
-    scrollStateBuilder: () -> ScrollState,
-    content: @Composable (ScaffoldContext<ScrollState>) -> Unit
+    scrollStateBuilder: () -> ScrollState = { ScrollState(0) },
+    content: @Composable (ScaffoldContext<ScrollState>) -> Unit,
 ) {
     composable(route, arguments, deepLinks) {
-        val viewModel: NavScaffoldViewModel = viewModel(it)
+        FocusedDestination {
+            val viewModel: NavScaffoldViewModel = viewModel(it)
 
-        val scrollState = viewModel.initializeScrollState(scrollStateBuilder)
+            val scrollState = viewModel.initializeScrollState(scrollStateBuilder)
 
-        content(ScaffoldContext(it, scrollState, viewModel))
-
-        it.ResumeAsNeeded(viewModel)
+            content(ScaffoldContext(it, scrollState, viewModel))
+        }
     }
 }
 
@@ -239,22 +235,21 @@ public fun NavGraphBuilder.scrollStateComposable(
  *
  * The scrollState must be taken from the [ScaffoldContext].
  */
-@ExperimentalComposeLayoutApi
 public fun NavGraphBuilder.lazyListComposable(
     route: String,
     arguments: List<NamedNavArgument> = emptyList(),
     deepLinks: List<NavDeepLink> = emptyList(),
-    lazyListStateBuilder: () -> LazyListState,
-    content: @Composable (ScaffoldContext<LazyListState>) -> Unit
+    lazyListStateBuilder: () -> LazyListState = { LazyListState() },
+    content: @Composable (ScaffoldContext<LazyListState>) -> Unit,
 ) {
     composable(route, arguments, deepLinks) {
-        val viewModel: NavScaffoldViewModel = viewModel(it)
+        FocusedDestination {
+            val viewModel: NavScaffoldViewModel = viewModel(it)
 
-        val scrollState = viewModel.initializeLazyList(lazyListStateBuilder)
+            val scrollState = viewModel.initializeLazyList(lazyListStateBuilder)
 
-        content(ScaffoldContext(it, scrollState, viewModel))
-
-        it.ResumeAsNeeded(viewModel)
+            content(ScaffoldContext(it, scrollState, viewModel))
+        }
     }
 }
 
@@ -263,33 +258,63 @@ public fun NavGraphBuilder.lazyListComposable(
  * [NavScaffoldViewModel] are passed into the [content] block so that
  * the Scaffold may be customised, such as disabling TimeText.
  */
-@ExperimentalComposeLayoutApi
+@Deprecated(
+    "Use composable",
+    ReplaceWith("composable(route, arguments, deepLinks, lazyListStateBuilder, content)"),
+)
 public fun NavGraphBuilder.wearNavComposable(
     route: String,
     arguments: List<NamedNavArgument> = emptyList(),
     deepLinks: List<NavDeepLink> = emptyList(),
-    content: @Composable (NavBackStackEntry, NavScaffoldViewModel) -> Unit
+    content: @Composable (NavBackStackEntry, NavScaffoldViewModel) -> Unit,
 ) {
     composable(route, arguments, deepLinks) {
-        val viewModel: NavScaffoldViewModel = viewModel()
+        FocusedDestination {
+            val viewModel: NavScaffoldViewModel = viewModel()
 
-        content(it, viewModel)
-
-        it.ResumeAsNeeded(viewModel)
+            content(it, viewModel)
+        }
     }
 }
 
-@ExperimentalComposeLayoutApi
-@Composable
-private fun NavBackStackEntry.ResumeAsNeeded(
-    viewModel: NavScaffoldViewModel
+/**
+ * Add non scrolling screen to the navigation graph. The [NavBackStackEntry] and
+ * [NavScaffoldViewModel] are passed into the [content] block so that
+ * the Scaffold may be customised, such as disabling TimeText.
+ */
+@ExperimentalHorologistApi
+public fun NavGraphBuilder.composable(
+    route: String,
+    arguments: List<NamedNavArgument> = emptyList(),
+    deepLinks: List<NavDeepLink> = emptyList(),
+    content: @Composable (NonScrollableScaffoldContext) -> Unit,
 ) {
-    // Wire up to NavBackStackEntry lifecycle
-    // events to make sure this composable handles
-    // events like scrolling.
-    LaunchedEffect(Unit) {
-        this@ResumeAsNeeded.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
-            viewModel.resumed()
+    this@composable.composable(route, arguments, deepLinks) {
+        FocusedDestination {
+            val viewModel: NavScaffoldViewModel = viewModel()
+
+            content(NonScrollableScaffoldContext(it, viewModel))
         }
+    }
+}
+
+@Composable
+internal fun FocusedDestination(content: @Composable () -> Unit) {
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    val focused =
+        remember { mutableStateOf(lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) }
+
+    DisposableEffect(lifecycle) {
+        val listener = LifecycleEventObserver { _, _ ->
+            focused.value = lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)
+        }
+        lifecycle.addObserver(listener)
+        onDispose {
+            lifecycle.removeObserver(listener)
+        }
+    }
+
+    HierarchicalFocusCoordinator(requiresFocus = { focused.value }) {
+        content()
     }
 }
